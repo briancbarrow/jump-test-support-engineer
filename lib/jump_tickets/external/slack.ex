@@ -134,12 +134,10 @@ defmodule JumpTickets.External.Slack do
     end
   end
 
-  def post_message("" <> _, text), do: nil
-
   @doc """
   Posts a message to a channel
   """
-  def post_message(channel_id, text) do
+  def post_message(channel_id, text) when is_binary(channel_id) and channel_id != "" do
     body = %{
       channel: channel_id,
       text: text
@@ -158,6 +156,8 @@ defmodule JumpTickets.External.Slack do
         {:error, reason}
     end
   end
+
+  def post_message("" <> _, text), do: nil
 
   @doc """
   Gets a channel by its name
